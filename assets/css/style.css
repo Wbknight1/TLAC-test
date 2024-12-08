@@ -1,0 +1,254 @@
+@import url(../css/clash-display.css);
+/*variables*/
+:root {
+        --c-dark: #212529;
+        --c-brand: rgb(101, 14, 31);
+        --c-brand-light:rgb(164, 52, 75);
+        --c-brand-rgb: 101, 14, 31;
+        --c-body: #696969;
+        --font-base: "ClashDisplay-Variable", sand-serif;
+        --box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.08);
+        --transition: all 0.5s ease;
+}
+
+/* BODY */
+body {
+    font-family: var(--font-base);
+    line-height: 1.7;
+    color: var(--c-body);
+    background-color: white;
+}
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+    font-weight: 600;
+    color: var(--c-brand-dark);
+}
+
+a {
+    text-decoration: none;
+    color: var(--c-brand);
+    transition: var(--transition);
+}
+
+a:hover {
+    color: var(--c-brand-light);
+
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.section-padding {
+    padding-top: 140px;
+    padding-bottom: 140px;
+
+}
+
+
+/* NAVIGATION BAR */
+
+.navbar {
+    position: sticky;
+    box-shadow: var(--box-shadow);
+    border-bottom-style: inset;
+    border-bottom-color: var(--c-brand-light);
+    border-bottom-width: 3px;
+}
+
+.navbar-nav .nav-link {
+    font-weight: 500;
+    color: var(--c-dark);
+
+}
+
+.navbar-nav .nav-link.active {
+    color: var(--c-brand)
+}
+
+/* Role Navbar Styles */
+role-navbar .nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    color: #555;
+    transition: all 0.3s ease;
+}
+
+role-navbar .nav-link:hover,
+role-navbar .nav-link.active {
+    color: var(--brand);
+    background: rgba(0,0,0,0.05);
+    border-radius: 4px;
+}
+
+role-navbar .nav-link i {
+    font-size: 18px;
+}
+
+/* Role Navbar Styles */
+.role-nav {
+    top: 76px; /* Adjust based on main navbar height */
+    z-index: 1020;
+    background: rgba(220, 220, 220, 0.95) !important;
+}
+
+.role-nav .navbar-nav {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.role-nav .navbar-nav::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+}
+
+.role-nav .nav-link {
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+}
+
+.role-nav .nav-link:hover,
+.role-nav .nav-link.active {
+    color: var(--brand);
+    background: rgba(0,0,0,0.05);
+    border-radius: 4px;
+}
+
+.role-nav .nav-link i {
+    font-size: 18px;
+}
+
+.role-nav .nav-active {
+    background-color: var(--brand) !important;
+    color: white !important;
+    border-radius: 25px;
+}
+
+.role-nav .nav-active:hover {
+    background-color: #d63c3c !important;
+    color: white !important;
+}
+
+/* BUTTONS */
+.btn {
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    padding: 10px 24px;
+    border-radius: 0;
+
+}
+
+
+.btn-brand {
+    background-color: var(--c-brand);
+    color: #fff;
+
+}
+
+.btn-brand:hover {
+    background-color: var(--c-brand-light);
+    border-color: var(--c-brand-light);
+    color: white;
+}
+
+
+/* HERO */
+
+#hero {
+    background: linear-gradient(rgba(var(--c-brand-rgb), 0.507), rgba(var(--c-brand-rgb), 0.438)), url(../images/darkgym.jpg) center;
+    background-position: center;
+    background-size: cover;
+}
+
+
+/* section title */
+
+.section-title {
+    margin-bottom: 60px;
+}
+
+.section-title .line {
+    width: 60px;
+    height: 4px;
+    background-color: var(--c-brand);
+    margin: 16px auto 24px auto;
+}
+
+.section-title p {
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ICON BOX */
+
+.iconbox {
+    width: 70px;
+    height: 60px;
+    display: inline-flex;
+    align-tems: center;
+    justify-content: center;
+    background: rgba(var(--c-brand-rgb), 0.2);
+    color: var(--c-brand);
+    font-size: 34px;
+}
+
+
+/* FOOTER */
+
+.footer {
+    position: static;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: white;
+    box-shadow: var(--box-shadow);
+    box-shadow: 15px;
+    color: var(--c-brand-primary);
+    text-align: left;
+    padding: 40px;
+    display: flex;
+    border-top-style: outset;
+    border-top-color: var(--c-brand);
+    border-top-width: 3px;
+
+
+}
+
+.copyright {
+    color: var(--c-brand);
+    font-size: 14px;
+    text-align: right;
+    align-items: end;
+    margin-left: auto;
+    margin-top: 20px;
+}
+
+/* Auth Pages Styling */
+.auth-background {
+    background-image: url('../images/gym-background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: calc(100vh - 76px); /* Adjust based on navbar height */
+    display: flex;
+    align-items: center;
+}
+
+.auth-background .card {
+    background: rgba(255, 255, 255, 0.95);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: none;
+}
+
+
+
+
