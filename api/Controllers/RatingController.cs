@@ -13,7 +13,7 @@ namespace api.Controllers
     public class RatingController : ControllerBase
     {
         // GET: api/RatingF
-        [HttpGet("api/Rating", Name = "GetAllRating")]
+        [HttpGet(Name = "GetAllRating")]
         public async Task<List<Rating>> Get()
         {
             RatingDatabase myDatabase = new();

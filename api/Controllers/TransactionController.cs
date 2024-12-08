@@ -24,14 +24,14 @@ namespace api.Controllers
         }
 
         // GET api/<TransactionController>/5
-        [HttpGet("api/Transaction/byCustomer/{id}", Name = "GetATransactionByCustID")]
+        [HttpGet("byCustomer/{id}", Name = "GetATransactionByCustID")]
         public async Task<List<Transaction>> Get(int id)
         {
             TransactionDatabase myDatabase = new();
             return await myDatabase.GetATransactionByCustID(id);
         }
 
-        [HttpGet("api/Transaction/{id}", Name = "GetATransaction")]
+        [HttpGet("{id}", Name = "GetATransaction")]
 
         public async Task<List<Transaction>> GetATransaction(int id)
         {

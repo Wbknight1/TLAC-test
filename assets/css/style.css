@@ -1,8 +1,40 @@
 @import url(../css/clash-display.css);
 /*variables*/
 :root {
+    /* Light theme variables */
+    --c-dark: #212529;
+    --c-brand: rgb(190, 11, 47);
+    --c-brand-light: rgb(164, 52, 75);
+    --c-brand-rgb: 101, 14, 31;
+    --c-body: #696969;
+    --c-bg: #ffffff;
+    --c-nav-bg: #ffffff;
+    --c-text: #212529;
+    --c-text-secondary: #696969;
+    --c-border: #dee2e6;
+    --c-card-bg: #ffffff;
+    --c-section-bg: #f8f9fa;
+    --box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.08);
+    --font-base: "ClashDisplay-Variable", sans-serif;
+    --transition: all 0.5s ease;
+}
+
+[data-theme="dark"] {
+    --c-dark: #ffffff;
+    --c-body: #e0e0e0;
+    --c-bg: #1a1a1a;
+    --c-nav-bg: #242424;
+    --c-text: #ffffff;
+    --c-text-secondary: #b4b4b4;
+    --c-border: #404040;
+    --c-card-bg: #2d2d2d;
+    --c-section-bg: #242424;
+    --box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.2);
+}
+
+:root {
         --c-dark: #212529;
-        --c-brand: rgb(101, 14, 31);
+        --c-brand: rgb(190, 11, 47);
         --c-brand-light:rgb(164, 52, 75);
         --c-brand-rgb: 101, 14, 31;
         --c-body: #696969;
@@ -15,14 +47,14 @@
 body {
     font-family: var(--font-base);
     line-height: 1.7;
-    color: var(--c-body);
-    background-color: white;
+    color: var(--c-text);
+    background-color: var(--c-bg);
 }
 
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
     font-weight: 600;
-    color: var(--c-brand-dark);
+    color: var(--c-text);
 }
 
 a {
@@ -54,22 +86,30 @@ img {
     position: sticky;
     box-shadow: var(--box-shadow);
     border-bottom-style: inset;
-    border-bottom-color: var(--c-brand-light);
+    border-bottom-color: var(--c-border);
     border-bottom-width: 3px;
+    background-color: var(--c-nav-bg) !important;
 }
 
+/* Update navigation styles */
 .navbar-nav .nav-link {
-    font-weight: 500;
-    color: var(--c-dark);
-
+    font-weight: 400;
+    color: var(--c-text);
+    font-size: 1rem;
+    transition: var(--transition), font-size 0.3s ease;
 }
 
 .navbar-nav .nav-link.active {
-    color: var(--c-brand)
+    font-weight: 600;
+    color: var(--c-brand) !important;
+    font-size: 1.1rem;
+    text-decoration: underline;
+    margin-top: 7px;
+    margin-bottom: 2px;
 }
 
 /* Role Navbar Styles */
-role-navbar .nav-link {
+role-navbar .nav-link{
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -93,7 +133,8 @@ role-navbar .nav-link i {
 .role-nav {
     top: 76px; /* Adjust based on main navbar height */
     z-index: 1020;
-    background: rgba(220, 220, 220, 0.95) !important;
+    background: var(--c-nav-bg) !important;
+    border-bottom-color: var(--c-border);
 }
 
 .role-nav .navbar-nav {
@@ -111,6 +152,7 @@ role-navbar .nav-link i {
     align-items: center;
     gap: 6px;
     transition: all 0.3s ease;
+    color: var(--c-text);
 }
 
 .role-nav .nav-link:hover,
@@ -136,12 +178,12 @@ role-navbar .nav-link i {
 }
 
 /* BUTTONS */
-.btn {
+.btn, button {
     font-weight: 600;
     font-size: 14px;
     text-transform: uppercase;
     padding: 10px 24px;
-    border-radius: 0;
+    border-radius: 8px;
 
 }
 
@@ -208,22 +250,36 @@ role-navbar .nav-link i {
     left: 0;
     bottom: 0;
     width: 100%;
-    background-color: white;
+    background-color: var(--c-nav-bg);
     box-shadow: var(--box-shadow);
     box-shadow: 15px;
-    color: var(--c-brand-primary);
+    color: var (--c-brand-primary);
     text-align: left;
     padding: 40px;
     display: flex;
     border-top-style: outset;
     border-top-color: var(--c-brand);
     border-top-width: 3px;
-
+    border-color: var(--c-border);
 
 }
 
-.copyright {
+.footer .social-links a {
+    font-size: 24px;
     color: var(--c-brand);
+    transition: var(--transition);
+}
+
+.footer .social-links a:hover {
+    color: var(--c-brand-light);
+}
+
+.footer p {
+    color: var(--c-text-secondary);
+}
+
+.copyright {
+    color: var(--c-text-secondary);
     font-size: 14px;
     text-align: right;
     align-items: end;
@@ -237,9 +293,9 @@ role-navbar .nav-link i {
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    min-height: calc(100vh - 76px); /* Adjust based on navbar height */
     display: flex;
     align-items: center;
+    padding: 70px;
 }
 
 .auth-background .card {
@@ -247,8 +303,505 @@ role-navbar .nav-link i {
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     border: none;
+    padding: 20px;
+
 }
 
+/* Navigation active states */
+.nav-link.active {
+    background-color: transparent;
+    border-radius: 0;
+    padding: inherit;
+}
 
+/* Role navbar active state */
+.role-nav .nav-link.active {
+    font-weight: 700;
+    color: var(--c-brand) !important;
+    background: transparent;
+}
 
+/* Hover states */
+.nav-link:hover:not(.active) {
+    background-color: rgba(var(--brand-rgb), 0.1);
+    border-radius: 50rem;
+}
 
+/* Update component-specific styles */
+.navbar, .role-nav {
+    background-color: var(--c-nav-bg) !important;
+    border-color: var(--c-border);
+}
+
+.accordion-item {
+    background-color: var(--c-card-bg);
+    border-color: var(--c-border);
+}
+
+.accordion-button {
+    background-color: var(--c-card-bg);
+    color: var(--c-text);
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: var(--c-section-bg);
+    color: var(--c-text);
+    font-weight: 700;
+}
+
+.accordion-button::after {
+    filter: none;
+}
+
+[data-theme="dark"] .accordion-button::after {
+    filter: invert(1);
+}
+
+.bg-light {
+    background-color: var(--c-section-bg) !important;
+}
+
+.card {
+    background-color: var(--c-card-bg);
+    border-color: var(--c-border);
+    transition: transform 0.3s ease-in-out;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+.btn, button{
+    transition: transform 0.3s ease-in-out;
+}
+.btn:hover, button:hover {
+    transform: translateY(-2px);
+}
+
+.card-img-wrapper {
+    position: relative;
+    background: var(--c-brand-light);
+}
+
+.card-img-wrapper img {
+    transition: transform 0.3s ease;
+}
+
+.card:hover .card-img-wrapper img {
+    transform: scale(1.1);
+}
+
+.card .btn-brand {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+}
+
+/* Update text colors */
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+    color: var(--c-text);
+}
+
+.nav-link, .nav-item, button {
+    color: var(--c-text);
+}
+
+.navbar-toggler-icon {
+    filter: none;
+}
+
+[data-theme="dark"] .navbar-toggler-icon {
+    filter: invert(1);
+}
+
+/* Add smooth transitions */
+body * {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, font-weight 0.3s ease;
+}
+
+/* Update text styles for better contrast */
+p, .lead {
+    color: var(--c-text-secondary);
+}
+
+/* Remove any remaining hardcoded colors */
+.role-nav .nav-active {
+    font-weight: 700;
+    background: transparent !important;
+    color: var(--c-brand) !important;
+}
+
+.role-nav .nav-active:hover {
+    background: transparent !important;
+    color: var(--c-text) !important;
+}
+
+/* Ensure smooth transitions */
+body * {
+    transition: background-color 0.3s ease, 
+                color 0.3s ease, 
+                border-color 0.3s ease,
+                font-weight 0.3s ease;
+}
+
+/* Featured Carousel Styles */
+.carousel-item {
+    padding: 2rem 0;
+    background-color: var(--c-section-bg);
+}
+
+.carousel-item img {
+    max-height: 400px;
+    object-fit: cover;
+}
+
+.text-brand {
+    color: var(--c-brand);
+}
+
+/* Featured Carousel Styles */
+.featured-slide {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    min-height: 550px;
+ 
+    color: white;
+    padding: 8rem;
+}
+
+.featured-slide::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+}
+
+.featured-content {
+    position: relative;
+    z-index: 1;
+    max-width: 600px;
+    color: white;
+}
+
+.featured-content h2,
+.featured-content h3,
+.featured-content p {
+    color: white;
+}
+
+ @media (prefers-color-scheme: dark) {
+        .card-title {
+             color: white;
+         }
+}
+
+/* Cards */
+
+.card-title {
+    color: var(--c-text);
+}
+
+/* Calendar Styles */
+.calendar-header {
+    background-color: var(--c-card-bg);
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: var(--box-shadow);
+}
+
+.current-date {
+    display: flex;
+    align-items: center;
+}
+
+.calendar-grid {
+    background-color: var(--c-card-bg);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1rem;
+    box-shadow: var(--box-shadow);
+    min-height: 600px;
+}
+
+.btn-outline-brand {
+    color: var(--c-brand);
+    border-color: var(--c-brand);
+}
+
+.btn-outline-brand:hover,
+.btn-outline-brand.active {
+    background-color: var(--c-brand);
+    color: white;
+}
+
+/* Calendar Grid Styles */
+.calendar-view {
+    border: 1px solid var(--c-border);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.calendar-header-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    background-color: var(--c-section-bg);
+    border-bottom: 1px solid var(--c-border);
+}
+
+.calendar-header-cell {
+    padding: 1rem;
+    text-align: center;
+    border-right: 1px solid var(--c-border);
+}
+
+.date-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.day-name {
+    font-weight: 600;
+    color: var(--c-brand);
+}
+
+.calendar-body {
+    max-height: none;
+}
+
+.calendar-row {
+    display: grid;
+    grid-template-columns: 100px repeat(3, 1fr);
+    border-bottom: 1px solid var(--c-border);
+    min-height: 60px;
+}
+
+.time-label {
+    padding: 0.5rem;
+    background-color: var(--c-section-bg);
+    border-right: 1px solid var(--c-border);
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.calendar-cell {
+    padding: 0.5rem;
+    border-right: 1px solid var(--c-border);
+    min-height: 60px;
+}
+
+.booking-card {
+    background-color: var(--c-brand);
+    color: white;
+    padding: 0.5rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+}
+
+.booking-title {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.booking-details {
+    font-size: 0.75rem;
+    opacity: 0.9;
+}
+
+.booking-actions {
+    display: flex;
+    gap: 0.25rem;
+    margin-top: 0.5rem;
+    justify-content: flex-end;
+}
+
+.booking-actions button {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+}
+
+.three-day-grid {
+    grid-template-columns: 100px repeat(3, 1fr);
+}
+
+.week-grid {
+    grid-template-columns: 100px repeat(7, 1fr);
+}
+
+.month-grid {
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.month-cell {
+    min-height: 120px;
+    padding: 0.5rem;
+    position: relative;
+    transition: opacity 0.3s ease;
+}
+
+.month-cell.out-of-month {
+    opacity: 0.3;
+}
+
+.month-cell.out-of-month .booking-card {
+    opacity: 0.5;
+}
+
+.month-date-label {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-weight: bold;
+}
+
+/* ...existing code... */
+
+.month-cell.out-of-month {
+    opacity: 0.3;
+    background-color: var(--c-section-bg);
+}
+
+.month-cell.out-of-month .booking-card {
+    opacity: 0.5;
+}
+
+/* ...existing code... */
+
+/* Alert Styles */
+.alert-brand {
+    background-color: var(--c-brand);
+    color: white;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 0;
+    padding: 1rem 0;
+}
+
+.alert-brand .btn-outline-light:hover {
+    background-color: white;
+    color: var (--c-brand);
+}
+
+/* ...existing code... */
+
+/* Upcoming Session Indicator */
+.upcoming-session {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--c-card-bg);
+    border: 1px solid var(--c-border);
+    border-radius: 8px;
+    box-shadow: var(--box-shadow);
+}
+
+.upcoming-session i {
+    font-size: 1.5rem;
+    color: var(--c-brand);
+}
+
+.upcoming-session-content {
+    flex-grow: 1;
+}
+
+.upcoming-session-content small {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.upcoming-session-content p {
+    color: var(--c-text);
+    font-weight: 500;
+}
+
+/* ...existing code... */
+
+/* Catalog Tab Styles */
+#catalogTabs {
+    gap: 1rem;
+    padding: 1rem 0;
+}
+
+#catalogTabs .nav-item {
+    margin: 0 0.5rem;
+}
+
+#catalogTabs .nav-link {
+    border: none;
+    padding: 0.75rem 2rem;
+    color: var(--c-text);
+    background: transparent;
+    border-radius: 50rem;
+    transition: all 0.3s ease;
+}
+
+#catalogTabs .nav-link:hover {
+    color: var(--c-brand);
+}
+
+#catalogTabs .nav-link.active {
+    background-color: var(--c-brand) !important;
+    color: white !important;
+    box-shadow: var(--box-shadow);
+}
+
+#catalogTabs .nav-link:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+/* ...existing code... */
+.btn-outline-brand:active {
+    background-color: var(--c-brand);
+    color: white;
+}
+
+/* ...existing code... */
+
+/* Pagination Styles */
+.pagination {
+    gap: 0.5rem;
+}
+
+.pagination .page-item .page-link {
+    border: none;
+    padding: 0.75rem 1.25rem;
+    color: var(--c-text);
+    background: transparent;
+    border-radius: 50rem;
+    transition: all 0.3s ease;
+}
+
+.pagination .page-item .page-link:hover {
+    color: var(--c-brand);
+    background: transparent;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--c-brand) !important;
+    color: white !important;
+    box-shadow: var(--box-shadow);
+}
+
+.pagination .page-item .page-link:focus {
+    outline: none;
+    box-shadow: none;
+    z-index: 0;
+}
+
+.pagination .page-item.disabled .page-link {
+    color: var(--c-text-secondary);
+    opacity: 0.5;
+    background: transparent;
+}
+
+/* ...existing code... */

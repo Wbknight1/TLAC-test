@@ -13,7 +13,7 @@ namespace api.Databases
 
         public Database()
         {
-            cs = "SERVER =qn0cquuabmqczee2.cbetxkdyhwsb.us-east-1.rds.amazonaws.com;User ID=d2b7qechj9vizjo2; Password = nz7esrg5gb4d0bav; port = 3306; Database =wd6sdqqskqalug7h";
+            cs = "SERVER =qn0cquuabmqczee2.cbetxkdyhwsb.us-east-1.rds.amazonaws.com;User ID=d2b7qechj9vizjo2; Password = nz7esrg5gb4d0bav; port = 3306; Database =wd6sdqqskqalug7h;";
         }
 
         public async Task dataNoReturnSql(string sql,List<MySqlParameter> parms)

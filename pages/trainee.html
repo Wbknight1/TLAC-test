@@ -6,24 +6,122 @@
     <title>TLAC - Member Home</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="../assets/css/style.css">
-    <!-- insert custom stylesheets -->
-    <script src="../components/header.js" type="text/javascript" defer></script>
-    <script src="../components/footer.js" type="text/javascript" defer></script>
-    <script src="../components/role-navbar.js" type="text/javascript" defer></script>
-     <!-- insert scripts -->
+    <link rel="stylesheet" href="/TLAC-test/assets/css/style.css">
+    <script src="/TLAC-test/components/header.js" type="text/javascript" defer></script>
+    <script src="/TLAC-test/components/footer.js" type="text/javascript" defer></script>
+    <script src="/TLAC-test/components/role-navbar.js" type="text/javascript" defer></script>
+    <script src="/TLAC-test/assets/js/trainee-cards.js" type="text/javascript" defer></script>
   </head>
 
-  
   <body>
 
 <header-component user-role="trainee"></header-component>
 <role-navbar user-role="trainee"></role-navbar>
 
-    <!-- Your page specific content here -->
+<!-- Upcoming Session Indicator -->
+<div class="container py-3">
+    <div class="upcoming-session" id="upcomingSessionIndicator">
+        <i class="ri-calendar-event-line" id="indicatorIcon"></i>
+        <div class="upcoming-session-content">
+            <h6>NEXT SESSION: </h6>
+            <p class="mb-0" id="upcomingSessionText">Loading...</p>
+        </div>
+        <a href="/TLAC-test/pages/traineecalendar.html" class="btn btn-sm btn-outline-brand">View Schedule</a>
+    </div>
+</div>
+
+<!-- Featured Cards Carousel -->
+<section class="container-fluid pb-5 bg-light">
+    <div id="featuredCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="featured-slide" style="background-image: url('/TLAC-test/assets/images/trainer1.jpg');">
+                    <div class="container">
+                        <div class="featured-content">
+                            <h2>Featuring The Top Trainers</h2>
+                            <h4 class="text-brand">Ready to Work, Today.</h4>
+                            <p class="lead">Specializing in workouts and routines of all kinds, in all locations</p>
+                            <a href="/TLAC-test/pages/traineecatelog.html" class="btn btn-brand">View Trainers Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="featured-slide" style="background-image: url('/TLAC-test/assets/images/gym1.jpg');">
+                    <div class="container">
+                        <div class="featured-content">
+                            <h2>Featured Gyms</h2>
+                            <h4 class="text-brand">Elite Fitness Centers and Equipment, Around The Globe</h4>
+                            <p class="lead">State-of-the-art equipment and 24/7 access</p>
+                            <a href="/TLAC-test/pages/traineecatelog.html" class="btn btn-brand">Find The Right Gyms</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="featured-slide" style="background-image: url('/TLAC-test/assets/images/workout1.jpg');">
+                    <div class="container">
+                        <div class="featured-content">
+                            <h2>Featured Routines</h2>
+                            <h4 class="text-brand">From 30-Day Transformations to Long-Term Strength Programming</h4>
+                            <p class="lead">Complete fitness routines and training styles for all needs</p>
+                            <a href="/TLAC-test/pages/traineecatelog.html" class="btn btn-brand">Get Started</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Trainer Cards Section -->
+<section class="container py-5">
+    <h2 class="mb-4">Our Trainers</h2>
+    <div class="row row-cols-1 row-cols-md-3 g-4" id="trainerCards">
+        <!-- Trainer cards will be dynamically inserted here -->
+    </div>
+    <div class="text-center mt-5">
+        <a href="/TLAC-test/pages/traineecatelog.html" class="btn btn-brand">View More Trainers</a>
+    </div>
+</section>
+
+<!-- Gym Cards Section -->
+<section class="container py-5">
+    <h2 class="mb-4">Our Gyms</h2>
+    <div class="row row-cols-1 row-cols-md-3 g-4" id="gymCards">
+        <!-- Gym cards will be dynamically inserted here -->
+    </div>
+    <div class="text-center mt-5">
+        <a href="/TLAC-test/pages/traineecatelog.html" class="btn btn-brand">View More Gyms</a>
+    </div>
+</section>
+
+<!-- Catalog Hero Section -->
+<section class="py-5 text-center" style="background-color: var(--c-section-bg)">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <hr style="height: 10px; color: var(--c-brand);border-width: 3px;">
+                <h1>Keep track of your past sessions and trainers</h1>
+                <p class="lead">Stay on track and see your fitness progress day-by-day</p>
+                <hr style="height: 10px; color: var(--c-brand);border-width: 3px;">
+                <a href="/TLAC-test/pages/traineeworkoutlog.html" class="btn btn-brand btn-lg">Explore Training Log</a>
+            </div>
+        </div>
+    </div>
+</section>
 
   <footer-component></footer-component>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-  </body>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Sets interval of carousel shifting -->
+  <script>
+    const carousel = new bootstrap.Carousel(document.getElementById('featuredCarousel'), {
+        interval: 3000,
+        wrap: true
+    });
+  </script>
+  <script src="/TLAC-test/assets/js/trainee-alerts.js"></script>
+</body>
 </html>

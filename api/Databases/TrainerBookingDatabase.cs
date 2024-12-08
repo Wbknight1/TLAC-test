@@ -9,6 +9,11 @@ namespace api.Databases
 {
     public class TrainerBookingDatabase : Database
     {
+        public TrainerBookingDatabase() {
+            // Add both AllowZeroDateTime and ConvertZeroDateTime
+            cs = $"{cs};AllowZeroDateTime=True;ConvertZeroDateTime=True";
+        }
+
         public async Task DeleteABooking(int BookingID) {
             string sql = $"DELETE FROM `TrainerBooking` WHERE (`BookingID` = @BookingID);";
             List<MySqlParameter> parms = new();
@@ -22,9 +27,10 @@ namespace api.Databases
             List<MySqlParameter> parms = new();
             parms.Add(new MySqlParameter("@BookingID", MySqlDbType.Int32) { Value = BookingID });
             parms.Add(new MySqlParameter("@TrainerID", MySqlDbType.Int32) { Value = booking.TrainerID });
-            parms.Add(new MySqlParameter("@BookingDate", MySqlDbType.DateTime) { Value = booking.BookingDate });    
-            parms.Add(new MySqlParameter("@StartTime", MySqlDbType.DateTime) { Value = booking.StartTime });
-            parms.Add(new MySqlParameter("@EndTime", MySqlDbType.DateTime) { Value = booking.EndTime });
+            // Match exact MySQL types
+            parms.Add(new MySqlParameter("@BookingDate", MySqlDbType.Date) { Value = booking.BookingDate.Date });    
+            parms.Add(new MySqlParameter("@StartTime", MySqlDbType.Time) { Value = booking.StartTime });
+            parms.Add(new MySqlParameter("@EndTime", MySqlDbType.Time) { Value = booking.EndTime });
             parms.Add(new MySqlParameter("@CustomerID", MySqlDbType.Int32) { Value = booking.CustomerID });
             await dataNoReturnSql(sql, parms);
 
@@ -75,7 +81,8 @@ namespace api.Databases
 
             List<MySqlParameter> parms = new();
             parms.Add(new MySqlParameter("@TrainerID", MySqlDbType.Int32) { Value = myData.TrainerID });
-            parms.Add(new MySqlParameter("@BookingDate", MySqlDbType.DateTime) { Value = myData.BookingDate });
+            // Match exact MySQL types
+            parms.Add(new MySqlParameter("@BookingDate", MySqlDbType.Date) { Value = myData.BookingDate.Date });
             parms.Add(new MySqlParameter("@StartTime", MySqlDbType.Time) { Value = myData.StartTime });
             parms.Add(new MySqlParameter("@EndTime", MySqlDbType.Time) { Value = myData.EndTime });
             parms.Add(new MySqlParameter("@CustomerID", MySqlDbType.Int32) { Value = myData.CustomerID });
@@ -97,19 +104,30 @@ namespace api.Databases
             using var reader = await command.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
-                toReturn.Add(new TrainerBooking()
+                try
                 {
-                    BookingID = reader.GetInt32("BookingID"),
-                    TrainerID = reader.GetInt32("TrainerID"),
-                    BookingDate = reader.GetDateTime("BookingDate"),
-                    StartTime = reader.GetTimeSpan("StartTime"),
-                    EndTime = reader.GetTimeSpan("EndTime"),
-                    CustomerID = reader.GetInt32("CustomerID"),
-                    TrainerName = reader.GetString("TrainerName"),
-                    CustomerName = reader.GetString("CustomerName"),
-                    GymID = reader.GetInt32("GymID"),
-                    GymAddress = reader.GetString("Address")
-                });
+                    var booking = new TrainerBooking()
+                    {
+                        BookingID = reader.GetInt32("BookingID"),
+                        TrainerID = reader.GetInt32("TrainerID"),
+                        // Handle date and time fields separately with their correct types
+                        BookingDate = reader.GetDateOnly("BookingDate").ToDateTime(TimeOnly.MinValue),
+                        StartTime = reader.GetTimeOnly("StartTime").ToTimeSpan(),
+                        EndTime = reader.GetTimeOnly("EndTime").ToTimeSpan(),
+                        CustomerID = reader.GetInt32("CustomerID"),
+                        TrainerName = reader.GetString("TrainerName"),
+                        CustomerName = reader.GetString("CustomerName"),
+                        GymID = reader.GetInt32("GymID"),
+                        GymAddress = reader.GetString("Address")
+                    };
+
+                    toReturn.Add(booking);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error reading booking: {ex.Message}");
+                    continue; // Skip invalid records
+                }
             }
 
             return toReturn;

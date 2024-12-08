@@ -18,7 +18,7 @@ namespace api.Controllers
         }
 
         // GET api/<AdminController>/5
-        [HttpGet("api/Admin/{id}", Name = "GetAnAdmin")]
+        [HttpGet("{id}", Name = "GetAnAdmin")]
         public async Task<List<Admin>> Get(int id)
         {
             AdminDatabase myDatabase = new();

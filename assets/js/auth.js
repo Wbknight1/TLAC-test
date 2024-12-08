@@ -132,10 +132,10 @@ document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
 
         if (user) {
             // Store user data
-            localStorage.setItem('userId', role === 'trainer' ? user.TrainerID : user.CustomerID);
+            localStorage.setItem('userId', role === 'trainer' ? user.trainerID : user.customerID); // Match case with API response
             localStorage.setItem('userRole', role);
-            localStorage.setItem('userEmail', user.Email);
-            localStorage.setItem('userName', user.Username);
+            localStorage.setItem('userEmail', user.email);
+            localStorage.setItem('userName', user.username);
 
             // Redirect based on role
             window.location.href = `${role}.html`;

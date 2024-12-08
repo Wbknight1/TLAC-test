@@ -23,7 +23,7 @@ namespace api.Controllers
         }
 
         // GET api/<TraineeController>/5
-        [HttpGet("api/Trainee/{id}", Name = "GetATrainee")]
+        [HttpGet("{id}", Name = "GetATrainee")]
         public async Task<List<Trainee>> Get(int CustomerID)
         {
             TraineeDatabase myDatabase = new();

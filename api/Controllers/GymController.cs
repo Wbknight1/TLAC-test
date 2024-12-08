@@ -12,15 +12,16 @@ namespace api.Controllers
     public class GymController : ControllerBase
     {
         // GET: api/<GymController>
-        [HttpGet("api/Gym", Name = "GetGyms")]
+        [HttpGet]
         public async Task<List<Gym>> Get()
         {
-            GymDatabase myDatabase = new();
-            return await myDatabase.GetAllGyms();
+                GymDatabase myDatabase = new();
+                return await myDatabase.GetAllGyms();
+
         }
 
         // GET api/<GymController>/5
-        [HttpGet("api/Gym/{id}", Name = "GetAGym")]
+        [HttpGet("{id}", Name = "GetAGym")]
         public async Task<List<Gym>> Get(int id)
         {
             GymDatabase myDatabase = new();

@@ -1863,3 +1863,4 @@ C:\Users\wheel\source\repos\static\TLAC-test\api\obj\Debug\net8.0\refint\api.dll
 C:\Users\wheel\source\repos\static\TLAC-test\api\obj\Debug\net8.0\api.pdb
 C:\Users\wheel\source\repos\static\TLAC-test\api\obj\Debug\net8.0\api.genruntimeconfig.cache
 C:\Users\wheel\source\repos\static\TLAC-test\api\obj\Debug\net8.0\ref\api.dll
+C:\Users\wheel\source\repos\static\TLAC-test\api\obj\Debug\net8.0\api.sourcelink.json
