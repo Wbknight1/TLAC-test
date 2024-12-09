@@ -14,10 +14,18 @@ namespace api.Controllers
     {
         // GET: api/RatingF
         [HttpGet(Name = "GetAllRating")]
-        public async Task<List<Rating>> Get()
+        public async Task<ActionResult<List<Rating>>> Get()
         {
-            RatingDatabase myDatabase = new();
-            return await myDatabase.GetAllRating();
+            try
+            {
+                var myDatabase = new RatingDatabase();
+                var ratings = await myDatabase.GetAllRating();
+                return Ok(ratings);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
  
         // POST api/<RatingController>

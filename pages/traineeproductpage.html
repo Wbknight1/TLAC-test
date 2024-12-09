@@ -10,6 +10,7 @@
     <script src="/TLAC-test/components/header.js" type="text/javascript" defer></script>
     <script src="/TLAC-test/components/footer.js" type="text/javascript" defer></script>
     <script src="/TLAC-test/components/role-navbar.js" type="text/javascript" defer></script>
+    <script src="/TLAC-test/assets/js/product-page.js" type="module" defer></script>
   </head>
 
   
@@ -18,7 +19,116 @@
 <header-component user-role="trainee"></header-component>
 <role-navbar user-role="trainee"></role-navbar>
 
-    <!-- Your page specific content here -->
+    <main class="py-5">
+        <!-- Product Details Section -->
+        <section class="container">
+            <div class="row" id="productDetails">
+                <!-- Left Column - Image -->
+                <div class="col-md-6 mb-4">
+                    <div class="product-image-container">
+                        <img src="" alt="Product Image" class="img-fluid rounded" id="productImage">
+                    </div>
+                </div>
+                
+                <!-- Right Column - Details -->
+                <div class="col-md-6">
+                    <div class="product-info">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <h1 id="productName" class="mb-3"></h1>
+                            <div class="rating">
+                                <span id="productRating"></span>
+                                <i class="ri-star-fill text-warning"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Dynamic Content Section -->
+                        <div id="dynamicContent">
+                            <!-- Content will be populated based on product type -->
+                        </div>
+
+                        <!-- Price and Booking Section -->
+                        <div class="pricing-section mt-4">
+                            <h3 class="text-brand" id="productPrice"></h3>
+                            <button class="btn btn-brand btn-lg mt-3" id="bookButton">
+                                Book Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Description Section -->
+        <section class="container mt-5">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Description</h3>
+                    <p id="productDescription" class="lead"></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Suggestions Carousel -->
+        <section class="container-fluid mt-5 py-5 bg-light">
+            <div class="container">
+                <h3 class="mb-4">Suggested For You</h3>
+                <div id="suggestionsCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <div class="row row-cols-1 row-cols-md-3 g-4" id="suggestionCards1">
+                                <!-- Cards will be inserted here -->
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="row row-cols-1 row-cols-md-3 g-4" id="suggestionCards2">
+                                <!-- Cards will be inserted here -->
+                            </div>
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#suggestionsCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#suggestionsCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Booking Modal -->
+    <div class="modal fade" id="bookingModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Book Session</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="bookingForm">
+                        <div class="mb-3">
+                            <label for="bookingDate" class="form-label">Date</label>
+                            <input type="date" class="form-control" id="bookingDate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="bookingTime" class="form-label">Time</label>
+                            <input type="time" class="form-control" id="bookingTime" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="bookingNotes" class="form-label">Notes (Optional)</label>
+                            <textarea class="form-control" id="bookingNotes" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-brand" id="confirmBooking">Confirm Booking</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
   <footer-component></footer-component>
 

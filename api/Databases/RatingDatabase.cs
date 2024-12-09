@@ -48,12 +48,18 @@ namespace api.Databases
  
         public async Task SendARating(Rating Rating)
         {
-            string sql = @"INSERT INTO `wd6sdqqskqalug7h`.`Rating` (`RatingNumber`, `TrainerID`)
+            string sql = @"INSERT INTO `Rating` (`RatingNumber`, `TrainerID`)
                VALUES (@RatingNumber, @TrainerID);";
  
             List<MySqlParameter> parms = new();
-            parms.Add(new MySqlParameter("@RatingNumber", MySqlDbType.Double) { Value = Rating.RatingNumber});
-            parms.Add(new MySqlParameter("@TrainerID", MySqlDbType.Int32) { Value = Rating.TrainerID });
+            parms.Add(new MySqlParameter("@RatingNumber", MySqlDbType.Double) 
+            { 
+                Value = Rating.RatingNumber.HasValue ? Rating.RatingNumber : DBNull.Value 
+            });
+            parms.Add(new MySqlParameter("@TrainerID", MySqlDbType.Int32) 
+            { 
+                Value = Rating.TrainerID.HasValue ? Rating.TrainerID : DBNull.Value 
+            });
             await dataNoReturnSql(sql, parms);
  
  
@@ -79,21 +85,24 @@ namespace api.Databases
             using var reader = await command.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
- 
-                myData.Add(new Rating()
+                try 
                 {
-                    RatingID = reader.GetInt32(0),
-                    RatingNumber = reader.GetDouble(1),
-                    TrainerID = reader.GetInt32(2)
- 
-                });
- 
+                    var rating = new Rating
+                    {
+                        RatingID = reader.IsDBNull(reader.GetOrdinal("RatingID")) ? null : reader.GetInt32(reader.GetOrdinal("RatingID")),
+                        RatingNumber = reader.IsDBNull(reader.GetOrdinal("RatingNumber")) ? null : reader.GetDouble(reader.GetOrdinal("RatingNumber")),
+                        TrainerID = reader.IsDBNull(reader.GetOrdinal("TrainerID")) ? null : reader.GetInt32(reader.GetOrdinal("TrainerID"))
+                    };
+                    myData.Add(rating);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error reading rating: {ex.Message}");
+                    continue; // Skip invalid records
+                }
             }
  
             return myData;
-
-            connection.Close();
-            connection.CloseAsync();
 
         }
  

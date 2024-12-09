@@ -18,37 +18,46 @@ class CardManager {
 
     async loadTrainers() {
         try {
-            // Get trainers
+            // First try to get trainers
             const trainersResponse = await fetch(`${this.apiBase}/Trainer`, {
                 method: 'GET',
                 headers: { 'Accept': 'application/json' }
             });
 
-            // Get ratings
-            const ratingsResponse = await fetch(`${this.apiBase}/Rating`, {
-                method: 'GET',
-                headers: { 'Accept': 'application/json' }
-            });
-
-            if (!trainersResponse.ok || !ratingsResponse.ok) {
-                throw new Error('Failed to fetch data');
+            if (!trainersResponse.ok) {
+                throw new Error('Failed to fetch trainers');
             }
 
             const trainers = await trainersResponse.json();
-            const ratings = await ratingsResponse.json();
+
+            // Try to get ratings, but don't fail if unavailable
+            let ratings = [];
+            try {
+                const ratingsResponse = await fetch(`${this.apiBase}/Rating`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                     }
+                });
+                if (ratingsResponse.ok) {
+                    ratings = await ratingsResponse.json();
+                }
+            } catch (error) {
+                console.warn('Ratings unavailable:', error);
+            }
 
             // Calculate average ratings
             const trainerRatings = trainers.map(trainer => {
                 const trainerRatings = ratings.filter(r => r.trainerID === trainer.trainerID);
                 const avgRating = trainerRatings.length > 0
-                    ? (trainerRatings.reduce((sum, r) => sum + r.ratingNumber, 0) / trainerRatings.length).toFixed(1)
+                    ? (trainerRatings.reduce((sum, r) => sum + (r.ratingNumber || 0), 0) / trainerRatings.length).toFixed(1)
                     : 'New';
                 return { ...trainer, avgRating };
             });
 
+            // Get random subset of trainers for preview
             const shuffledTrainers = [...trainerRatings].sort(() => Math.random() - 0.5);
             const newTrainers = shuffledTrainers.slice(0, 6);
-            
 
             const trainerCards = newTrainers.map(trainer => `
                 <div class="col">
@@ -57,8 +66,8 @@ class CardManager {
                             <img src="/TLAC-test/assets/images/trainers/${trainer.trainerID}.jpg" 
                                  class="card-img-top h-100 w-100"
                                  style="object-fit: cover;"
-                                 onerror="this.src='/TLAC-test/assets/images/default-gym.jpg'"
-                                 alt="Default Image">
+                                 onerror="this.onerror=null; this.src='/TLAC-test/assets/images/defaults/profile-placeholder.jpg';"
+                                 alt="${trainer.fName} ${trainer.lName}">
                         </div>
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title mb-1">${trainer.fName} ${trainer.lName}</h5>
@@ -74,10 +83,12 @@ class CardManager {
                 </div>
             `).join('');
 
-            this.trainerContainer.innerHTML = trainerCards;
+            if (this.trainerContainer) {
+                this.trainerContainer.innerHTML = trainerCards || '<div class="col-12 text-center">No trainers available</div>';
+            }
         } catch (error) {
             console.error('Error loading trainers:', error);
-            this.trainerContainer.innerHTML = '<div class="col"><p>Error loading trainers</p></div>';
+            this.displayErrorMessage('trainers');
         }
     }
 
@@ -114,7 +125,7 @@ class CardManager {
                             <img src="/TLAC-test/assets/images/gyms/${gym.checkOutID}.jpg" 
                                  class="card-img-top h-100 w-100"
                                  style="object-fit: cover;"
-                                 onerror="this.src='/TLAC-test/assets/images/default-gym.jpg'"
+                                 onerror="this.onerror=null; this.src='/TLAC-test/assets/images/defaults/gym-placeholder.jpg';"
                                  alt="Gym Image">
                         </div>
                         <div class="card-body d-flex flex-column">

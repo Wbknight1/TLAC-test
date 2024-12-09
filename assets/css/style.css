@@ -635,6 +635,39 @@ body * {
     grid-template-columns: 100px repeat(7, 1fr);
 }
 
+/* Add these new styles */
+.week-header {
+    display: grid;
+    grid-template-columns: 100px repeat(7, 1fr);
+    background-color: var(--c-section-bg);
+    border-bottom: 1px solid var(--c-border);
+}
+
+.week-header-cell {
+    padding: 1rem;
+    text-align: center;
+    border-right: 1px solid var(--c-border);
+    font-weight: 600;
+}
+
+.week-header-cell .day-name {
+    display: block;
+    color: var(--c-brand);
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+}
+
+.week-header-cell .date {
+    display: block;
+    font-size: 1.1rem;
+    color: var(--c-text);
+}
+
+.week-body {
+    display: grid;
+    grid-template-columns: 100px repeat(7, 1fr);
+}
+
 .month-grid {
     grid-template-columns: repeat(7, 1fr);
 }
@@ -652,13 +685,6 @@ body * {
 
 .month-cell.out-of-month .booking-card {
     opacity: 0.5;
-}
-
-.month-date-label {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    font-weight: bold;
 }
 
 /* ...existing code... */

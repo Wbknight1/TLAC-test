@@ -34,58 +34,165 @@ class CatalogManager {
 
     async loadTrainers() {
         try {
-            const trainersResponse = await fetch(`${this.apiBase}/Trainer`, {
-                method: 'GET',
-                headers: { 'Accept': 'application/json' }
-            });
+          const trainersResponse = await fetch(`${this.apiBase}/Trainer`, {
+            method: "GET",
+            headers: {
+              Accept: "application/json",
+              "Cache-Control": "no-cache",
+            },
+          });
+
+          if (!trainersResponse.ok) {
+            throw new Error("Failed to fetch trainers");
+          }
+
+          const trainers = await trainersResponse.json();
+
+          // Try to get ratings, but don't fail if unavailable
+          let ratings = [];
+          try {
             const ratingsResponse = await fetch(`${this.apiBase}/Rating`, {
-                method: 'GET',
-                headers: { 'Accept': 'application/json' }
+              method: "GET",
+              headers: {
+                Accept: "application/json",
+              },
             });
-
-            if (!trainersResponse.ok || !ratingsResponse.ok) {
-                throw new Error('Failed to fetch data');
+            if (ratingsResponse.ok) {
+              ratings = await ratingsResponse.json();
             }
+          } catch (error) {
+            console.warn("Ratings unavailable:", error);
+          }
 
-            const trainers = await trainersResponse.json();
-            const ratings = await ratingsResponse.json();
+          // Calculate average ratings
+          const trainerRatings = trainers.map((trainer) => {
+            const trainerRatings = ratings.filter(
+              (r) => r.trainerID === trainer.trainerID
+            );
+            const avgRating =
+              trainerRatings.length > 0
+                ? (
+                    trainerRatings.reduce(
+                      (sum, r) => sum + (r.ratingNumber || 0),
+                      0
+                    ) / trainerRatings.length
+                  ).toFixed(1)
+                : "New";
+            return { ...trainer, avgRating };
+          });
+          // let ratings = [];
 
-            const trainerResults = document.getElementById('trainerResults');
-            if (!trainerResults) return;
+          // try {
+          //     const ratingsResponse = await fetch(`${this.apiBase}/Rating`, {
+          //         method: 'GET',
+          //         headers: {
+          //             'Accept': 'application/json',
+          //         }
+          //     });
 
-            // Calculate average ratings and create cards
-            const filteredTrainers = this.filterAndSortData(trainers);
-            const trainerCards = filteredTrainers.map(trainer => {
-                const trainerRatings = ratings.filter(r => r.trainerID === trainer.trainerID);
-                const avgRating = trainerRatings.length > 0
-                    ? (trainerRatings.reduce((sum, r) => sum + r.rating, 0) / trainerRatings.length).toFixed(1)
-                    : 'New';
-                trainer.avgRating = avgRating;
+          //     if (ratingsResponse.ok) {
+          //         ratings = await ratingsResponse.json();
+          //         console.log('Raw ratings:', ratings); // Debug log
 
-                return `
-                    <div class="col">
-                        <div class="card shadow-sm h-100">
-                            <div class="card-img-wrapper" style="height: 200px; overflow: hidden;">
-                                <img src="/TLAC-test/assets/images/trainers/${trainer.trainerID}.jpg" 
-                                     class="card-img-top w-100 h-100" style="object-fit: cover;" 
-                                     alt="${trainer.fName} ${trainer.lName}">
-                            </div>
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title mb-1">${trainer.fName} ${trainer.lName}</h5>
-                                <p class="card-text">
-                                    <i class="ri-mail-line me-2"></i>${trainer.email}<br>
-                                    <i class="ri-focus-2-line me-2"></i>${trainer.specialityGroup}<br>
-                                    <i class="ri-star-line me-2"></i>Rating: ${avgRating}${avgRating !== 'New' ? '/5.0' : ''}
-                                </p>
-                                <a href="/TLAC-test/pages/traineeproductpage.html?type=trainer&id=${trainer.trainerID}" 
-                                   class="btn btn-brand mt-auto">View Profile</a>
-                            </div>
+          //         // Update property names to match C# model
+          //         ratings = ratings.filter(r => {
+          //             const isValid = r &&
+          //                 typeof r.ratingID !== 'undefined' &&  // Changed from ratingId
+          //                 r.trainerID !== null &&              // Changed from trainerId
+          //                 r.ratingNumber !== null &&
+          //                 !isNaN(Number(r.ratingNumber)) &&
+          //                 Number(r.ratingNumber) >= 0 &&
+          //                 Number(r.ratingNumber) <= 5;
+
+          //             if (!isValid) {
+          //                 console.warn('Invalid rating found:', r);
+          //             }
+          //             return isValid;
+          //         });
+          //     } else {
+          //         console.warn(`Ratings service error: ${ratingsResponse.status}`);
+          //         // Add user-visible warning
+          //         const warningDiv = document.createElement('div');
+          //         warningDiv.className = 'alert alert-warning alert-dismissible fade show';
+          //         warningDiv.innerHTML = `
+          //             <strong>Notice:</strong> Rating information is temporarily unavailable.
+          //             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          //         `;
+          //         document.querySelector('main')?.prepend(warningDiv);
+          //     }
+          // } catch (ratingError) {
+          //     console.warn('Error fetching ratings:', ratingError);
+          //     ratings = []; // Ensure ratings is empty on error
+          // }
+
+          // const trainerResults = document.getElementById('trainerResults');
+          // if (!trainerResults) return;
+
+          // // Map trainers with ratings, update property names
+          // const trainersWithRatings = trainers.map(trainer => {
+          //     let avgRating = 'New';
+          //     if (ratings.length > 0 && trainer && trainer.trainerID) {
+          //         const trainerRatings = ratings.filter(r =>
+          //             r &&
+          //             r.trainerID &&
+          //             r.trainerID === trainer.trainerID &&
+          //             r.ratingNumber !== null
+          //         );
+          //         if (trainerRatings.length > 0) {
+          //             const validRatings = trainerRatings.filter(r => !isNaN(Number(r.ratingNumber)));
+          //             if (validRatings.length > 0) {
+          //                 const sum = validRatings.reduce((acc, r) => acc + Number(r.ratingNumber), 0);
+          //                 avgRating = (sum / validRatings.length).toFixed(1);
+          //             }
+          //         }
+          //     }
+          //     return { ...trainer, avgRating };
+          // });
+
+          const filteredTrainers = this.filterAndSortData(trainerRatings);
+
+          const trainerCards = filteredTrainers
+            .map(
+              (trainer) => `
+                <div class="col">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-img-wrapper" style="height: 200px; overflow: hidden;">
+                            <img src="/TLAC-test/assets/images/trainers/${
+                              trainer.trainerID
+                            }.jpg" 
+                                 class="card-img-top w-100 h-100" style="object-fit: cover;" 
+                                 onerror="this.onerror=null; this.src='/TLAC-test/assets/images/defaults/profile-placeholder.jpg';"
+                                 alt="${trainer.fName} ${trainer.lName}">
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title mb-1">${trainer.fName} ${
+                trainer.lName
+              }</h5>
+                            <p class="card-text">
+                                <i class="ri-mail-line me-2"></i>${
+                                  trainer.email
+                                }<br>
+                                <i class="ri-focus-2-line me-2"></i>${
+                                  trainer.specialityGroup
+                                }<br>
+                                <i class="ri-star-line me-2"></i>Rating: ${
+                                  trainer.avgRating
+                                }${trainer.avgRating !== "New" ? "/5.0" : ""}
+                            </p>
+                            <a href="/TLAC-test/pages/traineeproductpage.html?type=trainer&id=${
+                              trainer.trainerID
+                            }" 
+                               class="btn btn-brand mt-auto">View Profile</a>
                         </div>
                     </div>
-                `;
-            }).join('');
+                </div>
+            `
+            )
+            .join("");
 
-            trainerResults.innerHTML = trainerCards || '<div class="col-12 text-center">No trainers found</div>';
+          trainerResults.innerHTML =
+            trainerCards ||
+            '<div class="col-12 text-center">No trainers found</div>';
         } catch (error) {
             console.error('Error loading trainers:', error);
             this.displayErrorMessage('trainers');
@@ -116,6 +223,7 @@ class CatalogManager {
                         <div class="card-img-wrapper" style="height: 200px; overflow: hidden;">
                             <img src="/TLAC-test/assets/images/gyms/${gym.checkOutID}.jpg" 
                                  class="card-img-top w-100 h-100" style="object-fit: cover;" 
+                                 onerror="this.onerror=null; this.src='/TLAC-test/assets/images/defaults/gym-placeholder.jpg';"
                                  alt="${gym.gymName}">
                         </div>
                         <div class="card-body d-flex flex-column">
@@ -198,7 +306,7 @@ class CatalogManager {
                 const category = e.target.getAttribute('data-bs-target').replace('#', '');
                 this.currentCategory = category;
                 this.currentPage = 1;
-                this.loadCatalogData(category);
+                this.refreshCurrentView(); // Fix: Changed from loadCatalogData to refreshCurrentView
             });
         });
 
@@ -390,5 +498,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const catalog = new CatalogManager();
     catalog.init().catch(error => {
         console.error('Failed to initialize catalog:', error);
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'alert alert-danger';
+        errorDiv.innerHTML = `
+            <strong>Error:</strong> Unable to load catalog data. Please try again later.
+            <button onclick="window.location.reload()" class="btn btn-sm btn-outline-danger ms-3">
+                <i class="ri-refresh-line"></i> Retry
+            </button>
+        `;
+        document.querySelector('main')?.prepend(errorDiv);
     });
 });

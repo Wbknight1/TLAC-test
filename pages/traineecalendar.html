@@ -18,7 +18,6 @@
 <role-navbar user-role="trainee"></role-navbar>
 
 <!-- MAIN -->
- <!-- Note: avtive table for week view not showing letters anymore -->
 <main class="container py-5">
     <!-- Calendar Header -->
     <div class="calendar-header mb-4">
@@ -69,7 +68,14 @@
     <!-- Calendar Grid -->
     <div class="calendar-container">
         <div id="calendarGrid" class="calendar-grid">
-            <!-- Calendar will be populated by JavaScript -->
+            <!-- Week view header structure will be added by JavaScript -->
+            <div class="week-header" id="calendarHeader">
+                <div class="week-header-cell time-label"></div>
+                <!-- Day columns will be added dynamically -->
+            </div>
+            <div class="week-body" id="calendarBody">
+                <!-- Time slots and events will be added dynamically -->
+            </div>
         </div>
     </div>
 </main>
